@@ -1,0 +1,7 @@
+<launch>
+
+  <node pkg="modulair_app_cpp_example" name="cpp_example" type="cpp_example">
+    <param name="/modulair/paths/apps/cpp_example/assets" value="$(find modulair_app_cpp_example)/assets"/>
+  </node>
+
+</launch>

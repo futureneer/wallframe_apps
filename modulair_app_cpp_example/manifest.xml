@@ -1,0 +1,16 @@
+<package>
+  <description brief="modulair_app_cpp_example">
+
+     modulair_app_cpp_example
+
+  </description>
+  <author>Kelleher Guerin</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/modulair_app_cpp_example</url>
+  <depend package="rospy"/>
+  <depend package="roscpp"/>
+
+</package>
+
+
