@@ -1,0 +1,6 @@
+msg_gen
+build
+bin
+*.pyc
+srv_gen
+*.cxx
