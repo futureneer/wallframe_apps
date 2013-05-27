@@ -1,6 +1,6 @@
 <launch>
 
-  <node pkg="modulair_app_python_example" name="python_example" type="python_example">
+  <node pkg="modulair_app_python_example" name="python_example" type="python_example_app.py">
     <param name="/modulair/paths/apps/python_example/assets" value="$(find modulair_app_python_example)/assets"/>
   </node>
 

@@ -10,6 +10,8 @@
   <url>http://ros.org/wiki/modulair_app_cpp_example</url>
   <depend package="rospy"/>
   <depend package="roscpp"/>
+  <depend package="modulair_core"/>
+  <depend package="modulair_msgs"/>
 
 </package>
 
