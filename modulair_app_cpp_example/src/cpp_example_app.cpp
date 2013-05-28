@@ -53,34 +53,26 @@ namespace modulair{
   }
 
   bool ExampleApp::start(){}
-
   bool ExampleApp::stop(){}
-
+  bool ExampleApp::pause(){}
+  bool ExampleApp::resume(){}
 }
 
 using namespace modulair;
 
 int main(int argc, char* argv[]){
-
   ros::init(argc,argv, "cpp_example_app");
-  
   ROS_WARN_STREAM("CppExampleApp: Starting Up...");
   ros::NodeHandle node_handle;
-
   QApplication application(argc,argv);
-  
   // This line will quit the application once any window is closed.
   application.connect(&application, SIGNAL(lastWindowClosed()), &application, SLOT(quit()));
-
-  modulair::ExampleApp menu_app("CppExampleApp",node_handle,20);
-  menu_app.build();
-
+  modulair::ExampleApp example_app("CppExampleApp",node_handle,20);
+  example_app.build();
   ROS_WARN_STREAM("CppExampleApp: App Running");
   application.exec();
-
   // Running
-  menu_app.stop();
+  example_app.stop();
   ROS_WARN_STREAM("CppExampleApp: App Finished");
-
   return 0;
 }

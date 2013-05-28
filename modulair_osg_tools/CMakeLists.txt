@@ -11,6 +11,11 @@ include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 
 rosbuild_init()
 
+#set the default path for built executables to the "bin" directory
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+#set the default path for built libraries to the "lib" directory
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+
 ### Bring in the Qt Libraries ###
 find_package(Qt4 REQUIRED)
 if(QT_FOUND)
@@ -23,11 +28,9 @@ else(QT_FOUND)
 	message(FATAL: QT NOT FOUND)
 endif(QT_FOUND)
 
-
 ### OpenGL ###
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
-
 
 ### OpenSceneGraph and OSGQt ###
 find_package(OpenSceneGraph COMPONENTS osgWidget osgViewer osgUtil 
@@ -40,25 +43,26 @@ if(NOT OSGQT_FOUND)
   message(error "Could not find osgQt")
 endif()
 
-
 ## Set Paths
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
-
 
 ## Qt MOC Generator (for Q_OBJECT behaviors)
 set(_moc ${CMAKE_CURRENT_BINARY_DIR}/${_current_MOC})
 
 ## Set your source files here (anything thats has a Q_OBJECT in it)
-set(IMAGE_STORM_APP_SOURCES src/image_storm_app.cpp)
-set(IMAGE_STORM_APP_HEADERS include/${PROJECT_NAME}/image_storm_app.h)
+set(MODULAIR_OSG_TOOLS_SOURCES 	src/osg_object_base.cpp
+																src/osg_planar_object.cpp)
+set(MODULAIR_OSG_TOOLS_HEADERS 	include/${PROJECT_NAME}/osg_object_base.h
+															 	include/${PROJECT_NAME}/osg_planar_object.h
+															 	include/${PROJECT_NAME}/state_object.h)
 
 ## Create MOC wrappers for headers
-qt4_wrap_cpp(IMAGE_STORM_APP_HEADERS_MOC ${IMAGE_STORM_APP_HEADERS})
+qt4_wrap_cpp(MODULAIR_OSG_TOOLS_HEADERS_MOC ${MODULAIR_OSG_TOOLS_HEADERS})
 
-rosbuild_add_library(${PROJECT_NAME}	${IMAGE_STORM_APP_HEADERS}
-										${IMAGE_STORM_APP_SOURCES}
-										${IMAGE_STORM_APP_HEADERS_MOC})
+rosbuild_add_library(${PROJECT_NAME}	${MODULAIR_OSG_TOOLS_HEADERS}
+										${MODULAIR_OSG_TOOLS_SOURCES}
+										${MODULAIR_OSG_TOOLS_HEADERS_MOC})
 
 #uncomment if you have defined messages
 #rosbuild_genmsg()
@@ -70,8 +74,5 @@ rosbuild_add_library(${PROJECT_NAME}	${IMAGE_STORM_APP_HEADERS}
 #target_link_libraries(${PROJECT_NAME} another_library)
 #rosbuild_add_boost_directories()
 #rosbuild_link_boost(${PROJECT_NAME} thread)
-rosbuild_add_executable(image_storm_app 	${IMAGE_STORM_APP_SOURCES})
-target_link_libraries(image_storm_app 		${PROJECT_NAME}
-																					${QT_LIBRARIES}
-										  										${OPENSCENEGRAPH_LIBRARIES}
-										  										osgQt)
+#rosbuild_add_executable(example examples/example.cpp)
+#target_link_libraries(example ${PROJECT_NAME})

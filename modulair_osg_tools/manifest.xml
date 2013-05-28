@@ -1,0 +1,21 @@
+<package>
+  <description brief="modulair_osg_tools">
+
+     modulair_osg_tools
+
+  </description>
+  <author>Kelleher Guerin</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/modulair_osg_tools</url>
+  <depend package="roscpp"/>
+  <depend package="rospy"/>
+  <depend package="modulair_core"/>
+
+  <export>
+    <cpp cflags="-I${prefix}/include" lflags="-L${prefix}/lib -lmodulair_osg_tools"/>  
+  </export>
+
+</package>
+
+

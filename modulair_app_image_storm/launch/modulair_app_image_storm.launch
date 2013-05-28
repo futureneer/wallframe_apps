@@ -1,7 +1,4 @@
 <launch>
-
-  <node pkg="modulair_app_image_storm" name="image_storm" type="image_storm">
-    <param name="/modulair/paths/apps/image_storm/assets" value="$(find modulair_app_image_storm)/assets"/>
-  </node>
-
+  <node pkg="modulair_app_image_storm" name="image_storm_app" type="image_storm_app"/>
+  <param name="/modulair/apps/image_storm_app/paths/assets" value="$(find modulair_app_image_storm)/assets"/>
 </launch>

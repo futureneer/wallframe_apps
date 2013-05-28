@@ -12,9 +12,10 @@ namespace modulair{
     ~ExampleApp(){};
 		bool build();
 		bool start();
-		bool stop();
+    bool stop();
+    bool pause();
+    bool resume();
 	};
-
 }
 
 #endif
