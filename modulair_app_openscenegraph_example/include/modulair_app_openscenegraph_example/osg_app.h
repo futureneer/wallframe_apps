@@ -1,5 +1,5 @@
-#ifndef image_storm_app_h
-#define image_storm_app_h 
+#ifndef osg_app_h
+#define osg_app_h 
 // MODULAIR INCLUDES
 #include <modulair_core/modulair_core.h>
 #include <modulair_core/modulair_app_base.h>
@@ -33,30 +33,30 @@
 namespace modulair{
 
   // 
-  class ImageStormApp;
+  class OsgApp;
   class KeyboardHandler : public osgGA::GUIEventHandler
     {
     public:
         bool handle(const osgGA::GUIEventAdapter& ea,
                     osgGA::GUIActionAdapter& aa);
         virtual void accept(osgGA::GUIEventHandlerVisitor& v);
-        virtual void setup(ImageStormApp* appPt);
-        ImageStormApp* appPtr;
+        virtual void setup(OsgApp* appPt);
+        OsgApp* appPtr;
     };
 
-	class ImageStormApp : public ModulairAppBase, public osgViewer::Viewer{
+	class OsgApp : public ModulairAppBase, public osgViewer::Viewer{
     Q_OBJECT
   public:
     /* Constructors and Destructors*/
-    ImageStormApp(QString app_name, ros::NodeHandle nh, int event_deque_size);
-    ~ImageStormApp();
+    OsgApp(QString app_name, ros::NodeHandle nh, int event_deque_size);
+    ~OsgApp();
     /* ModulairAppBase Virtual Methods */
-		bool build();
-		bool start();
+	bool build();
+	bool start();
     bool stop();
     bool pause();
     bool resume();
-    /*ImageStormApp specific members*/
+    /*OsgApp specific members*/
     // Qt Functions
     osgQt::GLWidget* addViewWidget( osg::Camera* camera, 
                                     osg::Node* scene );
@@ -68,8 +68,8 @@ namespace modulair{
     // Methods
     void updateEnvironment();
     void LoadTextures();
-    void collide();
-    void updateUsers();
+    // void collide();
+    // void updateUsers();
         
     // Camera Control Variables //
     osg::ref_ptr<osg::Camera> _camera;
@@ -90,11 +90,11 @@ namespace modulair{
     bool prev_activeUsers[12];
 
     ObjectList back_planes_;
-    ObjectList usage_planes_;
+    // ObjectList usage_planes_;
 
     // Wrappers //
     osg::ref_ptr<OSGObjectBase> _envWrapper;
-    osg::ref_ptr<OSGObjectBase> usage_wrapper_;
+    // osg::ref_ptr<OSGObjectBase> usage_wrapper_;
     osg::ref_ptr<OSGObjectBase> plane_wrapper_;
                                
     // OPENGL and QT //
@@ -105,21 +105,21 @@ namespace modulair{
     QStringList assetPaths;
     QStringList imagePaths;
     QList<osg::ref_ptr< osg::TextureRectangle > > _assetTextures;
-    QList<int> image_assignments;
+    // QList<int> image_assignments;
     QList<osg::Vec3> plane_start_pos;
 
     QString assetDir;
 
-    bool useKinect;
+    // bool useKinect;
 
-    static const double GUI_MAX_X =  1.0;
-    static const double GUI_MIN_X = -1.0;
-    static const double GUI_MAX_Y =  0.5;
-    static const double GUI_MIN_Y = -0.5;
+    // static const double GUI_MAX_X =  1.0;
+    // static const double GUI_MIN_X = -1.0;
+    // static const double GUI_MAX_Y =  0.5;
+    // static const double GUI_MIN_Y = -0.5;
     
     // int runtime;
     bool paused;
-    int _envState;
+    // int _envState;
 
   Q_SIGNALS:
     // void showImgs(int node);
@@ -138,7 +138,7 @@ namespace modulair{
     // Timers //
     QTimer _timer;
     QTimer _dataTimer; 
-    QTimer _delay; 
+    // QTimer _delay; 
 	};
 
 }

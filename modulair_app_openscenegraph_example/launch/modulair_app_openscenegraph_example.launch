@@ -1,7 +1,4 @@
 <launch>
-
-  <node pkg="modulair_app_openscenegraph_example" name="openscenegraph_example" type="openscenegraph_example">
-    <param name="/modulair/paths/apps/openscenegraph_example/assets" value="$(find modulair_app_openscenegraph_example)/assets"/>
-  </node>
-
+  <node pkg="modulair_app_openscenegraph_example" name="osg_app" type="osg_app" output="screen"/>
+  <param name="/modulair/apps/osg_app/paths/assets" value="$(find modulair_app_openscenegraph_example)/assets"/>
 </launch>

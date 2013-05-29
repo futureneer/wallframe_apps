@@ -36,54 +36,33 @@
  * Author: Kelleher Guerin, futureneer@gmail.com
  */
 
-#include <modulair_app_image_storm/image_storm_app.h>
+#include <modulair_app_openscenegraph_example/osg_app.h>
 #include <modulair_osg_tools/vector_conversions.h>
 
 namespace modulair{
 
-  ImageStormApp::ImageStormApp(QString app_name, ros::NodeHandle nh, int event_deque_size) : ModulairAppBase(app_name, nh, event_deque_size){
-
-    // readConfigFile();
-    // setImageDirectories();
-
-    // this->suspended = false;
-    // this->useKinect = useKin;
-    // this->runtime = 0;
+  OsgApp::OsgApp(QString app_name, ros::NodeHandle nh, int event_deque_size) : ModulairAppBase(app_name, nh, event_deque_size){
     this->paused = false;
-
     connect( &_timer, SIGNAL(timeout()), this, SLOT(update()));
     connect( &_dataTimer, SIGNAL(timeout()), this, SLOT(updateApp()));
-    // connect(this,SIGNAL(destroyed()),myManager,SLOT(confirmDestroyed()));
   }
 
-  ImageStormApp::~ImageStormApp(){
+  OsgApp::~OsgApp(){
     root = NULL;
     for(unsigned int i = 0; i<_envWrapper->getNumChildren();i++){
       _envWrapper->removeChild(i);
     }
     _envWrapper = NULL;
-
-    for(unsigned int i = 0; i<usage_wrapper_->getNumChildren();i++){
-      usage_wrapper_->removeChild(i);
-    }
-    usage_wrapper_ = NULL;
-
+    // usage_wrapper_ = NULL;
     for(unsigned int i = 0; i<plane_wrapper_->getNumChildren();i++){
       plane_wrapper_->removeChild(i);
     }
     plane_wrapper_ = NULL;
-
     cerr<<"DELETING PLANES"<<endl;
     for (int i=0; i< back_planes_.size(); i++){
       back_planes_.takeAt(0) = NULL;
     }
     this->back_planes_.clear();
-    cerr<<"DELETING PLANES"<<endl;
-    for (int i=0; i< usage_planes_.size(); i++){
-      usage_planes_.takeAt(0) = NULL;
-    }
-    this->usage_planes_.clear();
-
     cerr<<"DELETING TEXTURES"<<endl;
     for(int i=0;i<this->_assetTextures.length();i++)
     {
@@ -92,15 +71,14 @@ namespace modulair{
     this->_assetTextures.clear();
   }
 
-  void ImageStormApp::LoadTextures(){
+  void OsgApp::LoadTextures(){
     // Asset Textures //
     QDir asset_dir(this->asset_path_);
     QStringList assetFiles = asset_dir.entryList(QDir::Files | QDir::Readable, QDir::Name);
     for (int i=0; i<assetFiles.count(); i++){
       this->assetPaths << asset_dir.absoluteFilePath(assetFiles[i]);
     }
-
-    ROS_WARN_STREAM("ImageStormApp: Loading Images");
+    ROS_WARN_STREAM("OsgApp: Loading Images");
     osg::ref_ptr<osg::Image> img;
     for (int i = 0; i < this->assetPaths.size(); i++){
       img = osgDB::readImageFile(this->assetPaths.at(i).toStdString());
@@ -111,77 +89,36 @@ namespace modulair{
     ROS_WARN_STREAM(" Done");
   }
 
-  bool ImageStormApp::build(){
-    
+  bool OsgApp::build(){
     // VARIABLES ///////////////////////////////////////////////////////////////
     this->num_planes = 0;
     this->plane_size_ = 150;
     this->camera_position_offset = 5000;
-    
     // IMAGE ASSETS ////////////////////////////////////////////////////////////
     std::string asset_path;
-    if (!node_.getParam("/modulair/apps/image_storm_app/paths/assets", asset_path)){
+    if (!node_.getParam("/modulair/apps/osg_app/paths/assets", asset_path)){
       ROS_ERROR("Modulair%s: No asset path found on parameter server (namespace: %s)",
         name_.toStdString().c_str(), node_.getNamespace().c_str());
       return false;
     }else{
       asset_path_ = QString(asset_path.c_str());
-      ROS_WARN_STREAM("ImageStormApp:  Asset path is [" << this->asset_path_.toStdString() << "]");
+      ROS_WARN_STREAM("OsgApp:  Asset path is [" << this->asset_path_.toStdString() << "]");
     }
-
     // OSG OBJECTS /////////////////////////////////////////////////////////////
     root = new osg::Group;
     LoadTextures();
     // OSG Object Wrappers
     plane_wrapper_ = new OSGObjectBase();
-    usage_wrapper_ = new OSGObjectBase();
-
-    // Shuffle image planes
-    int img_fairness[800];
-    for (int i = 0; i < 800; i++){
-      img_fairness[i]=i%(this->assetPaths.size()-1);
-    }
-    for(int i=0;i<100;i++){
-      for(int j=0;j<800;j++){
-        int r=j+(rand()%(800-j));
-        int tmp=img_fairness[j];
-        img_fairness[j]=img_fairness[r];
-        img_fairness[r]=tmp;
-      }
-    }
     // IMAGE PLANES ////////////////////////////////////////////////////////////
-    for(int i = -20;i<20;i++){
-      for (int j = -10; j< 10; j++){
-        plane_start_pos.push_back(osg::Vec3(i*2*plane_size_,j*2*plane_size_,0));
-        osg::ref_ptr<PlanarObject> s = new PlanarObject( -plane_size_+5, -plane_size_+5, 0,
-                                                         plane_size_-5, plane_size_-5, 0, 
-                                                         &_assetTextures,
-                                                         img_fairness[num_planes],
-                                                         plane_start_pos[num_planes]);
-        plane_wrapper_->addChild(s.get());
-        back_planes_.push_back(s.get());
-        num_planes++;
-        image_assignments.push_back(-1);
-      }
-    }
-    ROS_WARN_STREAM("# of planes: "<<num_planes);
-    images_per_user_ = 13;
-    for(int j=0;j<12;j++){
-      activeUsers[j]=false;
-      prev_activeUsers[j]=false;
-      joint_increments[j]=0;
-
-    }
-    // USAGE PLANES ////////////////////////////////////////////////////////////
-    for (int i = 0; i < 12; i++){
-      osg::ref_ptr<PlanarObject> s = new PlanarObject( -plane_size_+5, -plane_size_+5, 0,
-                                                       plane_size_-5, plane_size_-5, 0, 
-                                                       &_assetTextures,
-                                                       this->assetPaths.size()-1,
-                                                       osg::Vec3(0,-10000,0));
-      usage_wrapper_->addChild(s.get());
-      usage_planes_.push_back(s.get());
-    }
+    plane_start_pos.push_back(osg::Vec3(.5*plane_size_,.5*plane_size_,0));
+    osg::ref_ptr<PlanarObject> s = new PlanarObject( -plane_size_+5, -plane_size_+5, 0,
+                                                     plane_size_-5, plane_size_-5, 0, 
+                                                     &_assetTextures,
+                                                     num_planes,
+                                                     plane_start_pos[num_planes]);
+    plane_wrapper_->addChild(s.get());
+    back_planes_.push_back(s.get());
+    num_planes++;
     // TRANSPARENCY ////////////////////////////////////////////////////////////
     osg::StateSet* ss = root->getOrCreateStateSet();
     ss->setMode(GL_BLEND, osg::StateAttribute::ON);
@@ -191,7 +128,7 @@ namespace modulair{
     ROS_WARN_STREAM("<<< ImageStorm >>> Setting Up Environment... ");
     _envWrapper = new OSGObjectBase();
     _envWrapper->addChild(plane_wrapper_);
-    _envWrapper->addChild(usage_wrapper_);
+    // _envWrapper->addChild(usage_wrapper_);
     root->addChild(_envWrapper);
     ROS_WARN_STREAM("Done.");
     // GL QT WIDGET ////////////////////////////////////////////////////////////
@@ -207,7 +144,7 @@ namespace modulair{
     return true;
   }
 
-  bool ImageStormApp::start(){
+  bool OsgApp::start(){
     // Start up app
     _timer.start( 10 );
     _dataTimer.start(10);
@@ -215,12 +152,12 @@ namespace modulair{
     return true;
   }
 
-  bool ImageStormApp::stop(){
+  bool OsgApp::stop(){
     /*Stop stuff here before destructor is called, if needed*/
     return true;
   }
 
-  bool ImageStormApp::pause(){
+  bool OsgApp::pause(){
     this->hide();
     _timer.stop();
     _dataTimer.stop();
@@ -229,7 +166,7 @@ namespace modulair{
     return true;
   }
 
-  bool ImageStormApp::resume(){
+  bool OsgApp::resume(){
     _timer.start(10);
     _dataTimer.start(10);
     this->show();
@@ -240,124 +177,29 @@ namespace modulair{
     return true;
   }
 
-  void ImageStormApp::updateApp(){
-    updateUsers();
+  void OsgApp::updateApp(){
     updateEnvironment();
   }
 
-  void ImageStormApp::updateUsers(){
-    numActiveUsers=0;
-    for(int j=0;j<12;j++){
-      activeUsers[j]=false;
-    }
-    
-    AppUserMap::iterator uit;
-    for(uit = users_.begin();uit!=users_.end();uit++){
-      int id = uit->first;
-      numActiveUsers++;
-      AppUser user = uit->second;
-      activeUsers[id]=true;
-      //   ROS_WARN_STREAM( activeUsers[id] <<"aftersettrue");
-      if(prev_activeUsers[id]==false){
-        //   ROS_WARN_STREAM("New user found! Selecting images for new user #"<<id);
-        int assigned=0;
-        while(assigned < images_per_user_){
-          int planes_to_get = rand()%num_planes;
-          //   ROS_WARN_STREAM("Chose image "<<planes_to_get);
-          if(image_assignments[planes_to_get]==-1){
-            //   ROS_WARN_STREAM("It was valid!");
-            image_assignments[planes_to_get]=id;
-            assigned++;
-          }else{
-            //   ROS_WARN_STREAM("It was already being used by user "<<image_assignments[planes_to_get]<<" :(");
-          }
-        }
-      }
-      prev_activeUsers[id]=true;
-    }
-
-    // Release Images from users who left
-    for(int j=0;j<12;j++){
-      //   ROS_WARN_STREAM( "user j is "<<activeUsers[j] );
-      if((activeUsers[j]==false) && prev_activeUsers[j]){
-        //   ROS_WARN_STREAM( activeUsers[j] <<"checkinguserj "<<j);
-        prev_activeUsers[j]=false;
-        for(int i=0;i<num_planes;i++){
-          if(image_assignments[i]==j){
-            //   ROS_WARN_STREAM("Image "<<i<<" was de-assigned");
-            image_assignments[i]=-1;
-          }
-        }
-      }
-    }
-  }
-
-  void ImageStormApp::updateEnvironment(){
-    // pull images to users
-    for(int j=0;j<12;j++){
-      joint_increments[j]=0;
-      if(!activeUsers[j]){
-        usage_planes_[j]->setPos3DAbs( osg::Vec3(0,-10000,0));
-      }
-    }
-    for(int i=0;i<num_planes;i++){
-      if(image_assignments[i]==-1){
-        osg::Vec3 curp=back_planes_[i]->getPos3D();
-        osg::Vec3 psp = plane_start_pos[i];
-        back_planes_[i]->setPos3DRel( (psp-curp)*0.1 );
-      }else{
-        int ii=image_assignments[i];
-        int jj=joint_increments[ii];
-        //   ROS_WARN_STREAM(jj);
-        osg::Vec3 joint_vec = eigToOsg3(users_[image_assignments[i]].jtPosById(jj));
-        joint_vec[0]*=1.3;
-        joint_vec[1]-=200;
-        // CAP JOINT Z to keep images small
-        if(joint_vec[2] > 2500)
-          joint_vec[2] = 2500;
-        joint_increments[image_assignments[i]]++;
-        if( jj==users_[image_assignments[i]].jtIdByName("torso") ){
-          joint_vec[2]+=70;
-          usage_planes_[image_assignments[i]]->setPos3DRel( (joint_vec-usage_planes_[image_assignments[i]]->getPos3D())*0.5 ); 
-        }
-        else{
-          osg::Vec3 torso=eigToOsg3(users_[image_assignments[i]].jtPosByName("torso"));
-          if(joint_vec[2]>=torso[2]){
-            joint_vec[2]=torso[2]-50;
-          }
-          back_planes_[i]->setPos3DRel( (joint_vec-back_planes_[i]->getPos3D())*0.1 );
-        }
-      }
-    }
-    collide();
-  }
-
-  void ImageStormApp::collide(){
-    for (int i = 0; i < back_planes_.size(); i++){
-      if(image_assignments[i]!=-1){
-        const osg::BoundingSphereImpl<osg::Vec3f> s1 = back_planes_[i]->getBound();
-        for (int j = i+1; j < back_planes_.size(); j++){
-          if(image_assignments[j]!=-1){
-            const osg::BoundingSphereImpl<osg::Vec3f> s2 = back_planes_[j]->getBound();
-            if(s1.intersects(s2)){
-              osg::Vec3 dir = s1.center()-s2.center();
-              double center_dist = dir.length();
-              double dist = -(center_dist-plane_size_)*0.1;
-              dir.normalize();
-              // dir[2]=2;
-              osg::Vec3 mv = dir*dist;
-              back_planes_[j]->setPosition(back_planes_[j]->getPosition()+mv*0.2);
-            }
-          }
-        }
-      }
+  void OsgApp::updateEnvironment(){
+    if(num_users_ == 0){
+      back_planes_[0]->setPos3DRel( (plane_start_pos[0]-back_planes_[0]->getPos3D())*0.1 );
+    }else{
+      AppUser user;
+      getFocusedUser(user);
+      osg::Vec3 pos = eigToOsg3(user.jtPosByName("torso"));
+      pos[0]*=1.3;
+      pos[1]-=200;
+      if(pos[2] > 2500)
+        pos[2] = 2500;
+      back_planes_[0]->setPos3DRel( (pos-back_planes_[0]->getPos3D())*0.1 );
     }
   }
 
   /*//////////////////////////////////////////////////////////////////////////*/
 
   /* OSG Viewer and Camera*/
-  osgQt::GLWidget* ImageStormApp::addViewWidget( osg::Camera* camera, osg::Node* scene ){
+  osgQt::GLWidget* OsgApp::addViewWidget( osg::Camera* camera, osg::Node* scene ){
     setCamera( camera );
 
     setSceneData( scene );
@@ -377,7 +219,7 @@ namespace modulair{
     return gw ? gw->getGLWidget() : NULL;
   }
 
-  osg::Camera* ImageStormApp::createCamera( int x, int y, int w, int h, osgQt::GLWidget *QTObject, const  string& name, bool windowDecoration){
+  osg::Camera* OsgApp::createCamera( int x, int y, int w, int h, osgQt::GLWidget *QTObject, const  string& name, bool windowDecoration){
     osg::DisplaySettings* ds = osg::DisplaySettings::instance().get();
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
     traits->windowName = name;
@@ -456,7 +298,7 @@ namespace modulair{
     v.visit(*this);
   }
 
-  void KeyboardHandler::setup(ImageStormApp* appPt){
+  void KeyboardHandler::setup(OsgApp* appPt){
     this->appPtr = appPt;
   }
 
@@ -468,19 +310,19 @@ namespace modulair{
 using namespace modulair;
 
 int main(int argc, char* argv[]){
-  ros::init(argc,argv, "image_storm_app");
-  ROS_WARN_STREAM("ImageStormApp: Starting Up...");
+  ros::init(argc,argv, "osg_app");
+  ROS_WARN_STREAM("OsgApp: Starting Up...");
   ros::NodeHandle node_handle;
   QApplication application(argc,argv);
   // This line will quit the application once any window is closed.
   application.connect(&application, SIGNAL(lastWindowClosed()), &application, SLOT(quit()));
-  modulair::ImageStormApp image_storm_app("ImageStormApp",node_handle,20);
-  image_storm_app.build();
-  image_storm_app.start();
-  ROS_WARN_STREAM("ImageStormApp: App Running");
+  modulair::OsgApp osg_app("OsgApp",node_handle,20);
+  osg_app.build();
+  osg_app.start();
+  ROS_WARN_STREAM("OsgApp: App Running");
   application.exec();
   // Running
-  image_storm_app.stop();
-  ROS_WARN_STREAM("ImageStormApp: App Finished");
+  osg_app.stop();
+  ROS_WARN_STREAM("OsgApp: App Finished");
   return 0;
 }
