@@ -61,6 +61,7 @@ namespace modulair{
 using namespace modulair;
 
 int main(int argc, char* argv[]){
+  // ros::init must be called before instantiating any apps
   ros::init(argc,argv, "cpp_example_app");
   ROS_WARN_STREAM("CppExampleApp: Starting Up...");
   ros::NodeHandle node_handle;

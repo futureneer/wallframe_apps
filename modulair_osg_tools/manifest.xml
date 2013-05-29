@@ -11,6 +11,7 @@
   <depend package="roscpp"/>
   <depend package="rospy"/>
   <depend package="modulair_core"/>
+  <depend package="tf_conversions"/>
 
   <export>
     <cpp cflags="-I${prefix}/include" lflags="-L${prefix}/lib -lmodulair_osg_tools"/>  

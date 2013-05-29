@@ -1,4 +1,4 @@
 <launch>
-  <node pkg="modulair_app_cpp_example" name="cpp_example_app" type="cpp_example_app"/>
+  <node pkg="modulair_app_cpp_example" name="cpp_example_app" type="cpp_example_app" output="screen"/>
   <param name="/modulair/apps/cpp_example_app/paths/assets" value="$(find modulair_app_cpp_example)/assets"/>
 </launch>

@@ -55,7 +55,8 @@ set(MODULAIR_OSG_TOOLS_SOURCES 	src/osg_object_base.cpp
 																src/osg_planar_object.cpp)
 set(MODULAIR_OSG_TOOLS_HEADERS 	include/${PROJECT_NAME}/osg_object_base.h
 															 	include/${PROJECT_NAME}/osg_planar_object.h
-															 	include/${PROJECT_NAME}/state_object.h)
+															 	include/${PROJECT_NAME}/state_object.h
+															 	include/${PROJECT_NAME}/vector_conversions.h)
 
 ## Create MOC wrappers for headers
 qt4_wrap_cpp(MODULAIR_OSG_TOOLS_HEADERS_MOC ${MODULAIR_OSG_TOOLS_HEADERS})
