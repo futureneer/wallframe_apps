@@ -23,7 +23,6 @@ class PythonExampleApp():
     rospy.logwarn("PythonExampleApp: Started")  
     app.exec_()
     # Done
-    rospy.logwarn('PythonExampleApp: Running')
     rospy.logwarn('PythonExampleApp: Finished')
 
 # MAIN
