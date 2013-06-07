@@ -14,7 +14,7 @@
 * copyright notice, this list of conditions and the following
 * disclaimer in the documentation and/or other materials provided
 * with the distribution.
-* * Neither the name of the Willow Garage nor the names of its
+* * Neither the name of the Johns Hopkins University nor the names of its
 * contributors may be used to endorse or promote products derived
 * from this software without specific prior written permission.
 *
@@ -33,30 +33,34 @@
 *********************************************************************/
 
 /*
- * Author: Kelleher Guerin, futureneer@gmail.com
+ * Author: Kelleher Guerin, futureneer@gmail.com, Johns Hopkins University
  */
 
 #include <modulair_app_cpp_example/cpp_example_app.h>
 
 namespace modulair{
 
-  ExampleApp::ExampleApp(QString app_name, ros::NodeHandle nh, int event_deque_size) : ModulairAppBase(app_name, nh, event_deque_size){}
+  ExampleApp::ExampleApp(std::string app_name, ros::NodeHandle nh, int event_deque_size) : ModulairAppBaseQt(app_name, nh, event_deque_size){}
 
   bool ExampleApp::build(){
     std::string asset_path;
     if (!node_.getParam("/modulair/apps/cpp_example_app/paths/assets", asset_path)){
       ROS_ERROR("Modulair%s: No asset path found on parameter server (namespace: %s)",
-        name_.toStdString().c_str(), node_.getNamespace().c_str());
+        name_.c_str(), node_.getNamespace().c_str());
       return false;
     }
     asset_path_ = QString(asset_path.c_str());
   }
 
-  bool ExampleApp::start(){}
-  bool ExampleApp::stop(){}
-  bool ExampleApp::pause(){}
-  bool ExampleApp::resume(){}
-}
+  bool ExampleApp::start(){return true;}
+
+  bool ExampleApp::stop(){return true;}
+
+  bool ExampleApp::pause(){return true;}
+
+  bool ExampleApp::resume(){return true;}
+
+} // end namepsace modulair
 
 using namespace modulair;
 

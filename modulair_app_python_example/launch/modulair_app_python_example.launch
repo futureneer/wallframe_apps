@@ -1,4 +1,5 @@
 <launch>
-  <node pkg="modulair_app_python_example" name="python_example_app" type="python_example_app.py"/>
+  <!-- <node pkg="modulair_app_python_example" name="python_example_app" type="python_example_app.py"/> -->
+  <node pkg="modulair_app_python_example" name="python_example_app_opengl" type="python_example_app_opengl.py"/>
   <param name="/modulair/apps/python_example/paths/assets" value="$(find modulair_app_python_example)/assets"/>
 </launch>
