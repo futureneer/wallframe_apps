@@ -1,0 +1,7 @@
+<launch>
+  <param name="/modulair/apps/wallcad_app/paths/assets"
+         value="$(find modulair_app_wallcad)/assets"/>
+
+  <node pkg="modulair_app_wallcad" name="wallcad_app"
+        type="wallcad_app" output="screen"/>
+</launch>

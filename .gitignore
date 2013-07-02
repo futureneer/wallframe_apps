@@ -7,3 +7,4 @@ bin
 srv_gen
 *.cxx
 *.txt.user
+*~
