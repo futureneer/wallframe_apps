@@ -6,3 +6,4 @@ bin
 *.pyc
 srv_gen
 *.cxx
+*.txt.user

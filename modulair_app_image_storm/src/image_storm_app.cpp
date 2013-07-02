@@ -41,7 +41,8 @@
 
 namespace modulair{
 
-  ImageStormApp::ImageStormApp(QString app_name, ros::NodeHandle nh, int event_deque_size) : ModulairAppBase(app_name, nh, event_deque_size){
+  ImageStormApp::ImageStormApp(std::string app_name, ros::NodeHandle nh, int event_deque_size)
+    : ModulairAppBaseQt(app_name, nh, event_deque_size){
 
     // readConfigFile();
     // setImageDirectories();
@@ -122,7 +123,7 @@ namespace modulair{
     std::string asset_path;
     if (!node_.getParam("/modulair/apps/image_storm_app/paths/assets", asset_path)){
       ROS_ERROR("Modulair%s: No asset path found on parameter server (namespace: %s)",
-        name_.toStdString().c_str(), node_.getNamespace().c_str());
+        name_.c_str(), node_.getNamespace().c_str());
       return false;
     }else{
       asset_path_ = QString(asset_path.c_str());
@@ -238,6 +239,9 @@ namespace modulair{
     paused = false;
     ROS_WARN_STREAM("<< ImageStorm >> Resumed");
     return true;
+  }
+
+  void ImageStormApp::update(){
   }
 
   void ImageStormApp::updateApp(){
