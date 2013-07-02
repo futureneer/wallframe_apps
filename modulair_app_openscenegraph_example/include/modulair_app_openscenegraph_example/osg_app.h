@@ -1,8 +1,7 @@
 #ifndef osg_app_h
 #define osg_app_h 
 // MODULAIR INCLUDES
-#include <modulair_core/modulair_core.h>
-#include <modulair_core/modulair_app_base.h>
+#include <modulair_core/modulair_app_base_qt.h>
 #include <modulair_osg_tools/osg_object_base.h>
 #include <modulair_osg_tools/osg_planar_object.h>
 // APP SPECIFIC INCLUDES
@@ -44,11 +43,11 @@ namespace modulair{
         OsgApp* appPtr;
     };
 
-	class OsgApp : public ModulairAppBase, public osgViewer::Viewer{
+  class OsgApp : public ModulairAppBaseQt, public osgViewer::Viewer{
     Q_OBJECT
   public:
     /* Constructors and Destructors*/
-    OsgApp(QString app_name, ros::NodeHandle nh, int event_deque_size);
+    OsgApp(std::string app_name, ros::NodeHandle nh, int event_deque_size);
     ~OsgApp();
     /* ModulairAppBase Virtual Methods */
 	bool build();
