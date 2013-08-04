@@ -94,6 +94,9 @@ void GOBall::tick() {
 	b2Vec2 position = body->GetPosition();
 	float32 angle = body->GetAngle();
 
+    if (position.y < -200)
+        spawn();
+
 	CGraphicsObject* graphicsComponent = (CGraphicsObject*)getComponent(CGraphicsObject::classTypeID());
 	graphicsComponent->setPosition(position.x, position.y, 0.0f);
 }

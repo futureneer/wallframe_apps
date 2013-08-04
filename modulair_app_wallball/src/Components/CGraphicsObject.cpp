@@ -9,10 +9,15 @@ CGraphicsObject::CGraphicsObject(GameObject* gameObject, path meshFilepath, path
 	
 	m_SceneNode = GraphicsManager::singleton()->getMeshSceneNode(meshFilepath, textureFilepath);
 	m_SceneNode->setScale(scale);
+    m_SceneNode->getMaterial(0).Shininess = 1.0f;
 }
 
 CGraphicsObject::~CGraphicsObject() {
 	
+}
+
+void CGraphicsObject::makeShiny() {
+    m_SceneNode->getMaterial(0).Shininess = 20.0f;
 }
 
 int CGraphicsObject::s_TypeID = -1;

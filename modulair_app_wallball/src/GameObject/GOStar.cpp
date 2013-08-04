@@ -21,6 +21,8 @@ GOStar::~GOStar() {
 void GOStar::start() {
 	GameObject::start();
 	spawn();
+    CGraphicsObject* graphicsComponent = (CGraphicsObject*)getComponent(CGraphicsObject::classTypeID());
+    graphicsComponent->makeShiny();
 }
 
 #define COLLECT_DISTANCE 2.0f

@@ -21,6 +21,8 @@ public:
 	virtual int componentTypeID();
 	static int classTypeID();
 		
+    void makeShiny();
+
 	virtual void start();
 	virtual void tick();
 	

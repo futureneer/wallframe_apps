@@ -83,8 +83,9 @@ GraphicsManager::GraphicsManager() {
 	
 	// LIGHTS
 	m_SceneManager->setAmbientLight(SColorf(0.5,0.5,0.5,1));
-	//m_SceneManager->addLightSceneNode( 0, core::vector3df(50,30,40), video::SColorf(0.0f,0.0f,0.0f), 75.0f, 1 ); 
-	//m_SceneManager->addLightSceneNode( 0, core::vector3df(-50,30,40), video::SColorf(0.0f,0.0f,0.0f), 75.0f, 1 ); 
+	m_SceneManager->addLightSceneNode( 0, core::vector3df(60,20,100), video::SColorf(0.0f,0.0f,0.0f), 50.0f, 1 );
+	//m_SceneManager->addLightSceneNode( 0, core::vector3df(-60,20,100), video::SColorf(0.0f,0.0f,5.0f), 50.0f, 1 );
+	//m_SceneManager->addLightSceneNode( 0, core::vector3df(-50,30,40), video::SColorf(0.0f,0.0f,0.0f), 75.0f, 1 );
 }
 
 GraphicsManager::~GraphicsManager() {
