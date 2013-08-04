@@ -1,0 +1,18 @@
+<package>
+  <description brief="modulair_app_wallball">
+
+     modulair_app_wallball
+
+  </description>
+  <author>Ethan Holly</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/modulair_app_wallball</url>
+  <depend package="rospy"/>
+  <depend package="roscpp"/>
+  <depend package="modulair_core"/>
+  <depend package="modulair_msgs"/>
+
+</package>
+
+

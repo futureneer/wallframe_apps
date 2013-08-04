@@ -1,0 +1,48 @@
+
+#include <GameObject/GOBlock.h>
+
+#include <Components/CGraphicsObject.h>
+#include <Components/CPhysicsObject.h>
+
+
+GOBlock::GOBlock(float xPos, float yPos, float xScale, float yScale) : GameObject() {
+	init(xPos, yPos, xScale, yScale, 0.0f, "assets/color1.bmp");
+}
+
+GOBlock::GOBlock(float xPos, float yPos, float xScale, float yScale, float rotation) : GameObject() {
+	init(xPos, yPos, xScale, yScale, rotation, "assets/color1.bmp");
+}
+
+GOBlock::GOBlock(float xPos, float yPos, float xScale, float yScale, float rotation, const char* matFile) : GameObject() {
+	init(xPos, yPos, xScale, yScale, rotation, matFile);
+}
+
+GOBlock::~GOBlock() {
+	
+}
+
+const float PI = 3.14159265359f;
+
+void GOBlock::init(float xPos, float yPos, float xScale, float yScale, float rotation, const char* matFile) {
+	
+	// make graphics component
+	CGraphicsObject* graphicsComponent = new CGraphicsObject(this, "assets/cube.3ds", matFile, vector3df(xScale, yScale, 1.0f) );
+	addComponent(graphicsComponent);
+	graphicsComponent->setPosition(xPos, yPos, 0.0f);
+	graphicsComponent->setRotation(rotation);
+	
+	// make physics component
+	b2PolygonShape box;
+	box.SetAsBox(xScale, yScale);
+	
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &box;
+	fixtureDef.density = 0.0f;
+	fixtureDef.friction = 0.3f;
+	
+	b2BodyDef bodyDef;
+	bodyDef.position.Set(xPos, yPos);
+	bodyDef.angle = rotation * PI / 180.0f;
+	
+	addComponent(new CPhysicsObject(this, &bodyDef, &fixtureDef));
+}
