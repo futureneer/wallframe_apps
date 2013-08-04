@@ -47,6 +47,57 @@ WallBallWidget::~WallBallWidget()
     s_RunPhysics = false;
 }
 
+void WallBallWidget::updateUsers(){
+    numActiveUsers=0;
+    for(int j=0;j<12;j++){
+      activeUsers[j]=false;
+    }
+    
+    AppUserMap::iterator uit;
+    for(uit = users_.begin();uit!=users_.end();uit++){
+      int id = uit->first;
+      numActiveUsers++;
+      AppUser user = uit->second;
+      activeUsers[id]=true;
+      /*
+      //   ROS_WARN_STREAM( activeUsers[id] <<"aftersettrue");
+      if(prev_activeUsers[id]==false){
+        //   ROS_WARN_STREAM("New user found! Selecting images for new user #"<<id);
+        int assigned=0;
+        while(assigned < images_per_user_){
+          int planes_to_get = rand()%num_planes;
+          //   ROS_WARN_STREAM("Chose image "<<planes_to_get);
+          if(image_assignments[planes_to_get]==-1){
+            //   ROS_WARN_STREAM("It was valid!");
+            image_assignments[planes_to_get]=id;
+            assigned++;
+          }else{
+            //   ROS_WARN_STREAM("It was already being used by user "<<image_assignments[planes_to_get]<<" :(");
+          }
+        }
+      }
+      */
+      prev_activeUsers[id]=true;
+    }
+
+    /*
+    // Release Images from users who left
+    for(int j=0;j<12;j++){
+      //   ROS_WARN_STREAM( "user j is "<<activeUsers[j] );
+      if((activeUsers[j]==false) && prev_activeUsers[j]){
+        //   ROS_WARN_STREAM( activeUsers[j] <<"checkinguserj "<<j);
+        prev_activeUsers[j]=false;
+        for(int i=0;i<num_planes;i++){
+          if(image_assignments[i]==j){
+            //   ROS_WARN_STREAM("Image "<<i<<" was de-assigned");
+            image_assignments[i]=-1;
+          }
+        }
+      }
+    }
+    */
+  }
+
 bool WallBallWidget::build(){
     std::string asset_path;
     if (!node_.getParam("/modulair/apps/wallball_app/paths/assets", asset_path)){
@@ -63,7 +114,7 @@ bool WallBallWidget::stop(){return true;}
 bool WallBallWidget::pause(){return true;}
 bool WallBallWidget::resume(){return true;}
 
-/*
+/* Currently, app does not use ROS asset directory. Should add this method and modify it to do so.
 void WallBallWidget::LoadTextures(){
     // Asset Textures //
     QDir asset_dir(this->asset_path_);

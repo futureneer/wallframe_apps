@@ -18,6 +18,9 @@ public:
 	
 private:
 	
+    float m_X;
+    float m_Y;
+
 	float m_Direction;
 	GOPortal* m_Target;
 	void setTarget(GOPortal* portal);

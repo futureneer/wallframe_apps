@@ -42,6 +42,18 @@ public:
         void recieveDiscreteGesture(QMap<int,int> events){}*/
 
 protected:
+
+    // USERS //
+    void updateUsers();
+
+    int numActiveUsers;
+    int images_per_user_;
+
+    bool activeUsers[12];
+    int joint_increments[12];
+    bool prev_activeUsers[12];
+
+    // Qt Events
     void resizeEvent (QResizeEvent* event);
 	void paintEvent ( QPaintEvent * event );
 	void keyPressEvent(QKeyEvent *event);

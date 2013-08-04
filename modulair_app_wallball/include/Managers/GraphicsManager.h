@@ -29,6 +29,7 @@ public:
     irr::scene::IMeshSceneNode* getMeshSceneNode(irr::io::path meshFilepath, irr::io::path textureFilepath);
 	//void resizeGL(int width, int height, QGLWidget* widget);
 
+    int* m_Scores;
 
 private:
 

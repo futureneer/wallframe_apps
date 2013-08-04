@@ -32,12 +32,14 @@ void GOPortal::setupPortal(float x1, float y1, float x2, float y2, const char* m
 }
 
 GOPortal::GOPortal(float x, float y, float direction) :
+    m_X(x), m_Y(y),
 	GOBlock(x, y, 0.5f, 5.5f, 0.0f, "assets/color3.bmp"),
 	m_Direction(direction),
 	m_Target(0) {
 }
 
 GOPortal::GOPortal(float x, float y, float direction, const char* matFile) :
+    m_X(x), m_Y(y),
 	GOBlock(x, y, 0.5f, 5.5f, 0.0f, matFile),
 	m_Direction(direction),
 	m_Target(0) {
@@ -53,7 +55,7 @@ void GOPortal::setTarget(GOPortal* portal) {
 
 void GOPortal::onCollision(GameObject* other) {
 
-	// if the other GameObject is a player and is moving into portal, teleport it
+	// if the other GameObject is a player and is moving into this portal, teleport it
 	if (other->getComponent(CController::classTypeID()) != 0) {
 		b2Body* body = ((CPhysicsObject *)other->getComponent(CPhysicsObject::classTypeID()))->getBody();
 		b2Vec2 velocity = body->GetLinearVelocity();
@@ -61,8 +63,9 @@ void GOPortal::onCollision(GameObject* other) {
 		// if the player is moving into portal, teleport it
 		if (velocity.x * m_Direction > 0.0f) {
 			b2Body* targetBody = ((CPhysicsObject *)m_Target->getComponent(CPhysicsObject::classTypeID()))->getBody();
+            float yDiff = m_Y - body->GetPosition().y;
 			b2Vec2 targetPosition = targetBody->GetPosition();
-			other->setNewPoint(targetPosition + b2Vec2(-m_Direction, 0.0f));
+			other->setNewPoint(targetPosition + b2Vec2(-m_Direction, 0.0f) - b2Vec2(0.0f, yDiff));
 		}
 	}
 }
