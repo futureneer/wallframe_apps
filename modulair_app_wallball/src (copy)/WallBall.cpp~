@@ -1,6 +1,6 @@
 // WallBall.h
 
-#include <src/WallBall.h>
+#include <WallBall.h>
 
 #include <iostream>
 

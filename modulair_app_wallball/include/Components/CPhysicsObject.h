@@ -18,6 +18,8 @@ public:
 		
 	virtual void start();
 	virtual void tick();
+
+    void kill();
 	
 	b2Body* getBody();
 	

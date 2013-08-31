@@ -61,6 +61,10 @@ b2Body* PhysicsManager::createBody(b2BodyDef* bodyDef) {
 	return m_World->CreateBody(bodyDef);
 }
 
+void PhysicsManager::removeBody(b2Body* body) {
+    m_World->DestroyBody(body);
+}
+
 void ContactListener::BeginContact(b2Contact* contact) {}
 
 void ContactListener::EndContact(b2Contact* contact) {

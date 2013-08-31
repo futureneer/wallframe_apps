@@ -12,7 +12,7 @@ CPhysicsObject::CPhysicsObject(GameObject* gameObject, b2BodyDef* bodyDef, b2Fix
 }
 
 CPhysicsObject::~CPhysicsObject() {
-	
+	//PhysicsManager::singleton()->removeBody(m_Body);
 }
 
 int CPhysicsObject::s_TypeID = -1;
@@ -32,6 +32,10 @@ void CPhysicsObject::start() {
 
 void CPhysicsObject::tick() {
 	
+}
+
+void CPhysicsObject::kill() {
+    PhysicsManager::singleton()->removeBody(m_Body);
 }
 
 b2Body* CPhysicsObject::getBody() {

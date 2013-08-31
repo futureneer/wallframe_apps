@@ -4,13 +4,16 @@
 #include <Components/CGraphicsObject.h>
 #include <Components/CPhysicsObject.h>
 
+#include <string>
+
+const std::string ASSETS_DIR = "assets/";
 
 GOBlock::GOBlock(float xPos, float yPos, float xScale, float yScale) : GameObject() {
-	init(xPos, yPos, xScale, yScale, 0.0f, "assets/color1.bmp");
+	init(xPos, yPos, xScale, yScale, 0.0f, "WallBall/media/color1.bmp");
 }
 
 GOBlock::GOBlock(float xPos, float yPos, float xScale, float yScale, float rotation) : GameObject() {
-	init(xPos, yPos, xScale, yScale, rotation, "assets/color1.bmp");
+	init(xPos, yPos, xScale, yScale, rotation, "WallBall/media/color1.bmp");
 }
 
 GOBlock::GOBlock(float xPos, float yPos, float xScale, float yScale, float rotation, const char* matFile) : GameObject() {
@@ -26,7 +29,7 @@ const float PI = 3.14159265359f;
 void GOBlock::init(float xPos, float yPos, float xScale, float yScale, float rotation, const char* matFile) {
 	
 	// make graphics component
-	CGraphicsObject* graphicsComponent = new CGraphicsObject(this, "assets/cube.3ds", matFile, vector3df(xScale, yScale, 1.0f) );
+	CGraphicsObject* graphicsComponent = new CGraphicsObject(this, "WallBall/media/cube.3ds", matFile, vector3df(xScale, yScale, 1.0f) );
 	addComponent(graphicsComponent);
 	graphicsComponent->setPosition(xPos, yPos, 0.0f);
 	graphicsComponent->setRotation(rotation);

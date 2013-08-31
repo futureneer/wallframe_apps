@@ -39,6 +39,10 @@ void CGraphicsObject::tick() {
 	
 }
 
+void CGraphicsObject::kill() {
+    m_SceneNode->remove();
+}
+
 void CGraphicsObject::setPosition(float x, float y, float z) {
 	m_SceneNode->setPosition(vector3df(x,y,z));
 }

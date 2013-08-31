@@ -25,6 +25,8 @@ public:
 
 	virtual void start();
 	virtual void tick();
+
+    void kill();
 	
 	void setPosition(float x, float y, float z);
 	void setRotation(float rotation);

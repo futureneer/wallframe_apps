@@ -10,7 +10,7 @@
 #include <WallBall.h>
 
 GOStar::GOStar() : GameObject() {
-	CGraphicsObject* graphicsComponent = new CGraphicsObject(this, "assets/star.3ds", "assets/color2.bmp", vector3df(1.0f, 1.0f, 1.0f) );
+	CGraphicsObject* graphicsComponent = new CGraphicsObject(this, (WallBall::s_AssetPath + "/star.3ds").c_str(), (WallBall::s_AssetPath + "/color2.bmp").c_str(), vector3df(1.0f, 1.0f, 1.0f) );
 	addComponent(graphicsComponent);
 }
 
@@ -35,6 +35,9 @@ void GOStar::tick() {
 	// check all balls to see if one has scored
 	for (int i = 0; i < NUM_BALLS; i++) {
 		GOBall* goBall = WallBall::getBall(i);
+        if (goBall == 0)
+            continue;
+
 		b2Vec2 position = goBall->getPosition();
 		if ( sqrt(pow(m_Y - position.y,2.0f) + pow(m_X - position.x,2.0f)) < COLLECT_DISTANCE) {
             goBall->m_Score++;

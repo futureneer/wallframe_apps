@@ -14,7 +14,7 @@ GOSpawnPoint::GOSpawnPoint(float xPos, float yPos) : GameObject() {
 	
 	if (GO_SPAWN_POINT_DEBUG) {
 		// make graphics component
-		CGraphicsObject* graphicsComponent = new CGraphicsObject(this, "WallBall/media/cube.3ds", "WallBall/media/color8.bmp", vector3df(0.3f, 0.3f, 0.3f) );
+		CGraphicsObject* graphicsComponent = new CGraphicsObject(this, "assets/cube.3ds", "WallBall/media/color8.bmp", vector3df(0.3f, 0.3f, 0.3f) );
 		addComponent(graphicsComponent);
 		graphicsComponent->setPosition(xPos, yPos, 0.0f);
 		graphicsComponent->setRotation(45.0f);

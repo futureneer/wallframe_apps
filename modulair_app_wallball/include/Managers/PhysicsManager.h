@@ -13,6 +13,7 @@ public:
 	bool tick();
 	
 	b2Body* createBody(b2BodyDef* bodyDef);
+    void removeBody(b2Body* body);
 
 private:
 

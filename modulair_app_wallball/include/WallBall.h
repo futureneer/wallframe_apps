@@ -29,7 +29,7 @@
 
 #include <QWidget>
 
-#define NUM_BALLS 2
+#define NUM_BALLS 6
 
 class WallBall {
 
@@ -38,10 +38,13 @@ private:
 	static bool s_Running;
 	static bool end();
 
-	static GOBall** s_GOBalls;
+	//static GOBall** s_GOBalls;
+
 
 public:
 	
+    static std::string s_AssetPath;
+
 	static void start();
 	static void start(QWidget* qWidget);
 	static void setupLevel();
@@ -50,7 +53,10 @@ public:
 	static bool tickPhysics();
 	static bool tickGraphics();
 	
+    static GOBall* newBall(int index);
+    static bool removeBall(int index);
 	static GOBall* getBall(int index);
+    static std::map<int,GOBall*>* s_GOBallMap;
 };
 
 #endif

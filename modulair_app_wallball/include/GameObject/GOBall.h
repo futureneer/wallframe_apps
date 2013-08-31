@@ -1,3 +1,5 @@
+#ifndef GO_BALL
+#define GO_BALL
 
 #include <GameObject/GameObject.h>
 
@@ -6,6 +8,8 @@
 class GOBall : public GameObject {
 	
 public:
+
+    static bool USE_KINECT;
 
 	GOBall();
 	GOBall(int playerNum);
@@ -17,11 +21,15 @@ public:
 	
 	virtual void onCollision(GameObject* other);
 	
+    void kill();
+
     int m_Score;
 
 	const b2Vec2& getPosition();
 	
 private:
+
+    bool m_Alive;
 
 	void init(int jumpKey, int leftKey, int rightKey, int playerNum);
 
@@ -30,3 +38,5 @@ private:
 	void updateVelocity();
 	
 };
+
+#endif // GO_BALL

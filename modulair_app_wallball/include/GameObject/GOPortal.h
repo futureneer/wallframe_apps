@@ -1,3 +1,5 @@
+#ifndef GO_PORTAL
+#define GO_PORTAL
 
 #include <GameObject/GameObject.h>
 #include <GameObject/GOBlock.h>
@@ -25,3 +27,5 @@ private:
 	GOPortal* m_Target;
 	void setTarget(GOPortal* portal);
 };
+
+#endif // GO_PORTAL

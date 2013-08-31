@@ -4,7 +4,10 @@
 
 #include <iostream>
 
-GOBall** WallBall::s_GOBalls = new GOBall*[NUM_BALLS];
+//GOBall** WallBall::s_GOBalls = new GOBall*[NUM_BALLS];
+std::map<int,GOBall*>* WallBall::s_GOBallMap = new map<int,GOBall*>();
+
+std::string WallBall::s_AssetPath = "";
 
 bool WallBall::s_Running = false;
 
@@ -12,7 +15,7 @@ void WallBall::start() {
 	WallBall::s_Running = true;
 	
 	GraphicsManager::singleton();
-    PhysicsManager::singleton();
+    	PhysicsManager::singleton();
 	InputManager::singleton();
 	GameObjectManager::singleton();
 	
@@ -25,9 +28,9 @@ void WallBall::start(QWidget* qWidget) {
 }
 
 void WallBall::setupLevel() {
-	WallBall::s_GOBalls[0] = new GOBall(Qt::Key_W,Qt::Key_A,Qt::Key_D);
-	WallBall::s_GOBalls[1] = new GOBall(Qt::Key_I,Qt::Key_J,Qt::Key_L);
-	
+    //	WallBall::s_GOBalls[0] = new GOBall(Qt::Key_W,Qt::Key_A,Qt::Key_D);
+    //    WallBall::s_GOBalls[1] = new GOBall(Qt::Key_I,Qt::Key_J,Qt::Key_L,1);
+	    
 	GameObject* goStar = new GOStar();
 	
 	GameObject* levelFrame = new GOLevelFrame();
@@ -70,13 +73,15 @@ void WallBall::setupLevel() {
 	GameObject* spawnPoint14 = new GOSpawnPoint(-27.0f, 40.5f);
 	
 	// Portals
-	GOPortal::setupPortal(-33.0f, 6.5f, 33.0f, 37.5f);
-	GOPortal::setupPortal(-33.0f, 23.5f, 33.0f, 23.5f);
-	GOPortal::setupPortal(-33.0f, 37.5f, 33.0f, 6.5f);
+	GOPortal::setupPortal(-33.0f, 6.5f, 33.0f, 37.5f, (WallBall::s_AssetPath + "assets/color3.bmp").c_str());
+	GOPortal::setupPortal(-33.0f, 23.5f, 33.0f, 23.5f, (WallBall::s_AssetPath + "assets/color5.bmp").c_str());
+	GOPortal::setupPortal(-33.0f, 37.5f, 33.0f, 6.5f, (WallBall::s_AssetPath + "assets/color8.bmp").c_str());
 }
 
+int temp = 0;
 bool WallBall::tick() {
 	return WallBall::tickPhysics() && WallBall::tickGraphics();
+    
 }
 
 bool WallBall::tickPhysics() {
@@ -94,7 +99,7 @@ bool WallBall::tickGraphics() {
 	if ( !success ) {
 		return WallBall::end();
 	}
-
+    
 	return WallBall::s_Running;
 }
 
@@ -106,7 +111,41 @@ bool WallBall::end() {
 	return false;
 }
 
+GOBall* WallBall::newBall(int index) {
+    //	make sure this index is not yet taken
+    std::map<int,GOBall*>::iterator it;
+    it = WallBall::s_GOBallMap->find(index);
+    if (it != WallBall::s_GOBallMap->end())
+        return it->second;
+    
+    GOBall* ball = new GOBall(index);
+    WallBall::s_GOBallMap->insert(std::pair<int,GOBall*>(index,ball));
+    
+    std::cout << "Made ball with ID: " << index << "\n" << std::flush;
+
+    return ball;
+}
+
+bool WallBall::removeBall(int index) {
+    //	return WallBall::s_GOBalls[index];
+    std::map<int,GOBall*>::iterator it;
+    it = WallBall::s_GOBallMap->find(index);
+
+    if (it == WallBall::s_GOBallMap->end())
+        return false;
+    GOBall* ball = it->second;
+    WallBall::s_GOBallMap->erase(it);
+    //delete ball;
+    ball->kill();
+    return true;
+}
 
 GOBall* WallBall::getBall(int index) {
-	return WallBall::s_GOBalls[index];
+    //	return WallBall::s_GOBalls[index];
+    std::map<int,GOBall*>::iterator it;
+    it = WallBall::s_GOBallMap->find(index);
+
+    if (it == WallBall::s_GOBallMap->end())
+        return 0;
+    return it->second;
 }

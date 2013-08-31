@@ -36,6 +36,7 @@
  * Author: Kelleher Guerin, futureneer@gmail.com, Johns Hopkins University
  */
 
+#include <WallBallWidget.h>
 #include <modulair_app_wallball/cpp_example_app.h>
 
 namespace modulair{
@@ -50,6 +51,8 @@ namespace modulair{
       return false;
     }
     asset_path_ = QString(asset_path.c_str());
+
+    WallBallWidget* wallBallWidget = new WallBallWidget(this);
   }
 
   bool ExampleApp::start(){return true;}
@@ -61,7 +64,7 @@ namespace modulair{
   bool ExampleApp::resume(){return true;}
 
 } // end namepsace modulair
-
+/*
 using namespace modulair;
 
 int main(int argc, char* argv[]){
@@ -81,3 +84,4 @@ int main(int argc, char* argv[]){
   ROS_WARN_STREAM("CppExampleApp: App Finished");
   return 0;
 }
+*/

@@ -18,6 +18,12 @@ public:
 
 	bool tick();
 	
+    static void SetMoveDirection(int index, float moveDirection);
+    static void SetJump(int index, bool jump);
+
+    static float GetMoveDirection(int index);
+    static bool GetJump(int index);
+
 private:
 
 	static InputManager* s_Singleton;
@@ -26,6 +32,9 @@ private:
 	~InputManager();
 	
 	bool m_KeyPressed[1000];
+
+    float m_MoveDirection[6];
+    bool m_Jump[6];
 };
 
 #endif

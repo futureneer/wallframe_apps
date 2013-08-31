@@ -6,36 +6,61 @@
 #include <Components/CSpawnPoint.h>
 #include <Components/CController.h>
 #include <Components/CKeyboardController.h>
+#include <Components/CKinectController.h>
 
 #include <Qt>
 #include <math.h>
 
 #include <iostream>
 
+bool GOBall::USE_KINECT = true;
+
 GOBall::GOBall() : GameObject() {
 
-	init();
+	init(Qt::Key_W,Qt::Key_A,Qt::Key_D,0);
+}
 
-	// make graphics component
-	addComponent(new CGraphicsObject(this, "WallBall/media/sphere.3ds", "WallBall/media/color0.bmp"));
-	
-	// make controller component
-	addComponent(new CKeyboardController(this, Qt::Key_W,Qt::Key_A,Qt::Key_D));
+GOBall::GOBall(int playerNum) : GameObject() {
+
+	init(Qt::Key_W,Qt::Key_A,Qt::Key_D,playerNum);
 }
 
 GOBall::GOBall(int jumpKey, int leftKey, int rightKey) : GameObject() {
 
-	init();
-
-	// make graphics component
-	addComponent(new CGraphicsObject(this, "WallBall/media/sphere.3ds", "WallBall/media/color0.bmp"));
+	init(jumpKey,leftKey,rightKey,0);
 	
-	// make controller component
-	addComponent(new CKeyboardController(this, jumpKey, leftKey, rightKey));
 }
 
-void GOBall::init() {
+GOBall::GOBall(int jumpKey, int leftKey, int rightKey, int playerNum) : GameObject() {
+
+	init(jumpKey,leftKey,rightKey,playerNum);
 	
+}
+
+void GOBall::init(int jumpKey, int leftKey, int rightKey, int playerNum) {
+	
+    this->m_Alive = true;
+
+    this->m_Score = 0;
+
+    // make graphics component
+    char* texturePath = "assets/color0.bmp";
+    switch (playerNum) {
+    case 0: texturePath = "assets/color0.bmp"; break;
+    case 1: texturePath = "assets/color2.bmp"; break;
+    case 2: texturePath = "assets/color3.bmp"; break;
+    case 3: texturePath = "assets/color4.bmp"; break;
+    case 4: texturePath = "assets/color6.bmp"; break;
+    case 5: texturePath = "assets/color8.bmp"; break;
+    }
+	addComponent(new CGraphicsObject(this, "assets/sphere.3ds", texturePath));
+	
+	// make controller component
+    if (!GOBall::USE_KINECT)
+        addComponent(new CKeyboardController(this, jumpKey, leftKey, rightKey));
+    else
+        addComponent(new CKinectController(this, playerNum));
+
 	// make physics component
 	b2CircleShape circle;
 	circle.m_radius = 0.95f;
@@ -59,6 +84,14 @@ const b2Vec2& GOBall::getPosition() {
 	return body->GetPosition();
 }
 
+void GOBall::kill() {
+    m_Alive = false;
+    CPhysicsObject* physicsComponent = (CPhysicsObject*)getComponent(CPhysicsObject::classTypeID());
+    physicsComponent->kill();
+    CGraphicsObject* graphicsComponent = (CGraphicsObject*)getComponent(CGraphicsObject::classTypeID());
+    graphicsComponent->kill();
+}
+
 void GOBall::start() {
 	GameObject::start();
 	spawn();
@@ -67,6 +100,9 @@ void GOBall::start() {
 void GOBall::tick() {
 	GameObject::tick();
 	
+    if (!m_Alive)
+        return;
+
 	jump();
 	updateVelocity();
 	
@@ -76,6 +112,9 @@ void GOBall::tick() {
 	
 	b2Vec2 position = body->GetPosition();
 	float32 angle = body->GetAngle();
+
+    if (position.y < -200)
+        spawn();
 
 	CGraphicsObject* graphicsComponent = (CGraphicsObject*)getComponent(CGraphicsObject::classTypeID());
 	graphicsComponent->setPosition(position.x, position.y, 0.0f);

@@ -51,6 +51,7 @@ set(WALLBALL_APP_SOURCES
   src/Components/CController.cpp
   src/Components/CGraphicsObject.cpp
   src/Components/CKeyboardController.cpp
+  src/Components/CKinectController.cpp
   src/Components/CPhysicsObject.cpp
   src/Components/CSpawnPoint.cpp
   src/GameObject/Component.cpp
@@ -73,6 +74,7 @@ set(WALLBALL_APP_HEADERS
   include/Components/CController.h
   include/Components/CGraphicsObject.h
   include/Components/CKeyboardController.h
+  include/Components/CKinectController.h
   include/Components/CPhysicsObject.h
   include/Components/CSpawnPoint.h
   include/GameObject/Component.h
