@@ -2,6 +2,7 @@
 #define GO_BALL
 
 #include <GameObject/GameObject.h>
+#include <GameObject/GOScore.h>
 
 #include <Box2D/Box2D.h>
 
@@ -30,6 +31,7 @@ public:
 private:
 
     bool m_Alive;
+    GOScore *m_ScoreObject;
 
 	void init(int jumpKey, int leftKey, int rightKey, int playerNum);
 

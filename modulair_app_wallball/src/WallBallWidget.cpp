@@ -10,8 +10,11 @@
 #include <QDialog>
 #include <QHBoxLayout>
 #include <pthread.h>
+
 using namespace std;
 using namespace modulair;
+
+#define NUM_USERS 7
 
 bool WallBallWidget::s_RunPhysics = false;
 
@@ -63,10 +66,10 @@ WallBallWidget::~WallBallWidget()
     s_RunPhysics = false;
 }
 
-bool lastUserFlags[6];
+bool lastUserFlags[NUM_USERS];
 void WallBallWidget::updateUsers(){
-    bool userFlags[6];
-    for (int i = 0; i < 6; ++i)
+    bool userFlags[NUM_USERS];
+    for (int i = 0; i < NUM_USERS; ++i)
         userFlags[i] = false;
 
     AppUserMap::iterator uit;
@@ -106,7 +109,7 @@ void WallBallWidget::updateUsers(){
         userFlags[uit->first] = true;
     }
 
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < NUM_USERS; ++i) {
         // if a user left, remove their ball from the game
         if (userFlags[i] == false && lastUserFlags[i] == true) {
             WallBall::removeBall(i);

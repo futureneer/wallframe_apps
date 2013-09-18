@@ -44,6 +44,7 @@ void GOBall::init(int jumpKey, int leftKey, int rightKey, int playerNum) {
     this->m_Alive = true;
 
     this->m_Score = 0;
+    this->m_ScoreObject = new GOScore(playerNum);
 
     // make graphics component
     const char* texturePath = (WallBall::s_AssetPath + "/color0.bmp").c_str();
@@ -55,8 +56,17 @@ void GOBall::init(int jumpKey, int leftKey, int rightKey, int playerNum) {
     case 4: texturePath = (WallBall::s_AssetPath + "/color6.bmp").c_str(); break;
     case 5: texturePath = (WallBall::s_AssetPath + "/color8.bmp").c_str(); break;
     }
+
+    //char tempString[strlen(texturePath)];
+    //char *tempString = (char *)calloc(strlen(texturePath), sizeof(char));
+    //strcpy(tempString, texturePath);
+
+    std::cout << "GOBALL: Texture filename: " << texturePath << "\n" << std::flush;
 	addComponent(new CGraphicsObject(this, (WallBall::s_AssetPath + "/sphere.3ds").c_str(), texturePath));
-	
+	std::cout << "GOBALL: 2: Texture filename: " << texturePath << "\n" << std::flush;
+
+    //free(tempString);
+
 	// make controller component
     if (!GOBall::USE_KINECT)
         addComponent(new CKeyboardController(this, jumpKey, leftKey, rightKey));
@@ -104,6 +114,8 @@ void GOBall::tick() {
 	
     if (!m_Alive)
         return;
+
+    m_ScoreObject->updateScore(m_Score);
 
 	jump();
 	updateVelocity();
@@ -196,5 +208,4 @@ void GOBall::onCollision(GameObject* other) {
 		
 //		std::cout << "Impulse 2 (" << difference.x << "," << difference.y <<")\n" << std::flush;
 	}
-
 }

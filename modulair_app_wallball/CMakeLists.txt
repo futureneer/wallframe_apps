@@ -58,6 +58,7 @@ set(WALLBALL_APP_SOURCES
   src/GameObject/GameObject.cpp
   src/GameObject/GameObjectManager.cpp
   src/GameObject/GOBall.cpp
+  src/GameObject/GOScore.cpp
   src/GameObject/GOBlock.cpp
   src/GameObject/GOPortal.cpp
   src/GameObject/GOSpawnPoint.cpp
@@ -81,6 +82,7 @@ set(WALLBALL_APP_HEADERS
   include/GameObject/GameObject.h
   include/GameObject/GameObjectManager.h
   include/GameObject/GOBall.h
+  include/GameObject/GOScore.h
   include/GameObject/GOBlock.h
   include/GameObject/GOPortal.h
   include/GameObject/GOSpawnPoint.h

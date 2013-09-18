@@ -1,7 +1,7 @@
 #ifndef image_storm_app_h
 #define image_storm_app_h 
 // MODULAIR INCLUDES
-#include <modulair_core/modulair_core.h>
+// #include <modulair_core/modulair_core.h>
 #include <modulair_core/modulair_app_base.h>
 #include <modulair_osg_tools/osg_object_base.h>
 #include <modulair_osg_tools/osg_planar_object.h>
