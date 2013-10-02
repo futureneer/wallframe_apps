@@ -1,0 +1,23 @@
+<package>
+  <description brief="modulair_app_pic_flier">
+
+     modulair_app_pic_flier
+
+  </description>
+  <author>Kelleher Guerin</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/modulair_app_pic_flier</url>
+  <depend package="rospy"/>
+  <depend package="roscpp"/>
+  <depend package="wallframe_core"/>
+  <depend package="wallframe_msgs"/>
+  <depend package="modulair_osg_tools"/>
+
+  <export>
+    <cpp cflags="-I${prefix}/include" lflags="-L${prefix}/lib -lmodulair_app_image_storm"/>  
+  </export>
+
+</package>
+
+

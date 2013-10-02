@@ -1,0 +1,19 @@
+##	PicFlyer Config File                                                       	##
+##########################################################################################
+##	NOTE: For file locations and parameters, please keep the parameter on the  	##
+##	same line as the BOLD tag for the parameter with a space in between.       	##
+##	PARAMETERS:									##
+##	ASSET_DIR: Directory for the program assets; i.e. cursors, icons, etc.		##
+##	IMAGE_DIR: The root directory of the image data to be loaded			##
+##	MANUSCRIPTS: The manuscript collections to be loaded. Note that this is 	##
+##	not the name of each individual manuscript, but the name of the type of 	##
+##	manuscript, e.g. RomanDeLaRose, rather than UC1380				##
+##	UNORDERED: The names of the unordered collections to be loaded			##
+##	NOTE: File system structure follows a strict ordering. ADD THAT LATER		##
+##########################################################################################
+
+ASSET_DIR assets
+TOOL_TIP_DIR tooltips
+#IMAGE_DIR /home/library/BALAUR/TestData/
+#MANUSCRIPTS 
+UNORDERED levy fowler jhu UC1380 baltimore_harbor jhufundraising
