@@ -40,7 +40,7 @@
 
 namespace modulair{
 
-  ExampleApp::ExampleApp(std::string app_name, ros::NodeHandle nh, int event_deque_size) : ModulairAppBaseQt(app_name, nh, event_deque_size){}
+  ExampleApp::ExampleApp(std::string app_name, ros::NodeHandle nh, int event_deque_size) : wallframe::WallframeAppBaseQt(app_name, nh, event_deque_size){}
 
   bool ExampleApp::build(){
     std::string asset_path;
@@ -81,3 +81,4 @@ int main(int argc, char* argv[]){
   ROS_WARN_STREAM("CppExampleApp: App Finished");
   return 0;
 }
+

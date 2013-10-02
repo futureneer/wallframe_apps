@@ -41,7 +41,7 @@
 
 namespace modulair{
 
-  OsgApp::OsgApp(QString app_name, ros::NodeHandle nh, int event_deque_size) : ModulairAppBase(app_name, nh, event_deque_size){
+  OsgApp::OsgApp(QString app_name, ros::NodeHandle nh, int event_deque_size) : wallframe::WallframeAppBaseQt(app_name.toStdString(), nh, event_deque_size){
     this->paused = false;
     connect( &_timer, SIGNAL(timeout()), this, SLOT(update()));
     connect( &_dataTimer, SIGNAL(timeout()), this, SLOT(updateApp()));
@@ -98,7 +98,7 @@ namespace modulair{
     std::string asset_path;
     if (!node_.getParam("/modulair/apps/osg_app/paths/assets", asset_path)){
       ROS_ERROR("Modulair%s: No asset path found on parameter server (namespace: %s)",
-        name_.toStdString().c_str(), node_.getNamespace().c_str());
+        name_.c_str(), node_.getNamespace().c_str());
       return false;
     }else{
       asset_path_ = QString(asset_path.c_str());
@@ -185,7 +185,7 @@ namespace modulair{
     if(num_users_ == 0){
       back_planes_[0]->setPos3DRel( (plane_start_pos[0]-back_planes_[0]->getPos3D())*0.1 );
     }else{
-      AppUser user;
+      wallframe::AppUser user;
       getFocusedUser(user);
       osg::Vec3 pos = eigToOsg3(user.jtPosByName("torso"));
       pos[0]*=1.3;

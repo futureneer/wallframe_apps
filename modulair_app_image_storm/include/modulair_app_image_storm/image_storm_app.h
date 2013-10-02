@@ -2,7 +2,7 @@
 #define image_storm_app_h 
 // MODULAIR INCLUDES
 // #include <modulair_core/modulair_core.h>
-#include <modulair_core/modulair_app_base.h>
+#include <wallframe_core/wallframe_app_base_qt.h>
 #include <modulair_osg_tools/osg_object_base.h>
 #include <modulair_osg_tools/osg_planar_object.h>
 // APP SPECIFIC INCLUDES
@@ -44,7 +44,7 @@ namespace modulair{
         ImageStormApp* appPtr;
     };
 
-	class ImageStormApp : public ModulairAppBase, public osgViewer::Viewer{
+  class ImageStormApp : public wallframe::WallframeAppBaseQt, public osgViewer::Viewer{
     Q_OBJECT
   public:
     /* Constructors and Destructors*/

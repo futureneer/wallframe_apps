@@ -10,7 +10,7 @@
   <url>http://ros.org/wiki/modulair_osg_tools</url>
   <depend package="roscpp"/>
   <depend package="rospy"/>
-  <depend package="modulair_core"/>
+  <depend package="wallframe_core"/>
   <depend package="tf_conversions"/>
 
   <export>

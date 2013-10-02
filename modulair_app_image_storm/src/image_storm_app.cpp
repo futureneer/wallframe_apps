@@ -41,7 +41,7 @@
 
 namespace modulair{
 
-  ImageStormApp::ImageStormApp(QString app_name, ros::NodeHandle nh, int event_deque_size) : ModulairAppBase(app_name, nh, event_deque_size){
+  ImageStormApp::ImageStormApp(QString app_name, ros::NodeHandle nh, int event_deque_size) : wallframe::WallframeAppBaseQt(app_name.toStdString(), nh, event_deque_size){
 
     // readConfigFile();
     // setImageDirectories();
@@ -122,7 +122,7 @@ namespace modulair{
     std::string asset_path;
     if (!node_.getParam("/modulair/apps/image_storm_app/paths/assets", asset_path)){
       ROS_ERROR("Modulair%s: No asset path found on parameter server (namespace: %s)",
-        name_.toStdString().c_str(), node_.getNamespace().c_str());
+        name_.c_str(), node_.getNamespace().c_str());
       return false;
     }else{
       asset_path_ = QString(asset_path.c_str());
@@ -251,11 +251,11 @@ namespace modulair{
       activeUsers[j]=false;
     }
     
-    AppUserMap::iterator uit;
+    wallframe::AppUserMap::iterator uit;
     for(uit = users_.begin();uit!=users_.end();uit++){
       int id = uit->first;
       numActiveUsers++;
-      AppUser user = uit->second;
+      wallframe::AppUser user = uit->second;
       activeUsers[id]=true;
       //   ROS_WARN_STREAM( activeUsers[id] <<"aftersettrue");
       if(prev_activeUsers[id]==false){
