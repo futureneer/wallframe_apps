@@ -1,10 +1,12 @@
 #ifndef _PicFlyer_H
 #define _PicFlyer_H
+
 // QT //
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
 #include <QtGui/QGridLayout>
 #include <QtGui>
+
 // OSG //
 #include <osgQt/GraphicsWindowQt>
 #include <osgViewer/CompositeViewer>
@@ -33,29 +35,12 @@
 #include <iostream>
 
 #include <wallframe_core/wallframe_app_base_qt.h>
+
 #include <modulair_osg_tools/osg_object_base.h>
 #include <modulair_osg_tools/osg_planar_object.h>
 
-/* Old includes.
-#include "AppBase.h"
-#include "OSGObjectWrapper.h"
-#include "StateObject.h"
-#include "OSGObject.h"
-#include "SkeletonObject.h"
-#include "SphereObject.h"
-#include "CubeObject.h"
-#include "InteractionObject.h"
-#include "PlanarObject.h"
-#include "TexturedPlane.h"
-#include "CursorObject.h"
-#include "DockableObject.h"
-#include "Holster.h"
-#include "MoveTool.h"
-#include "CameraTool.h"
-#include "ActableObject.h"
-*/
+#include <modulair_app_pic_flyer/SphereObject.h>
 
-//MODEL FILES
 #include <modulair_app_pic_flyer/Model/PictureCollectionFactory.h>
 #include <modulair_app_pic_flyer/Model/PictureCollection.h>
 #include <modulair_app_pic_flyer/Model/ManuscriptCollection.h>
@@ -64,6 +49,9 @@
 #include <modulair_app_pic_flyer/Model/DisplayImage.h>
 #include <modulair_app_pic_flyer/Model/Opening.h>
 #include <modulair_app_pic_flyer/Model/CollectionStore.h>
+
+using namespace modulair;
+using namespace wallframe;
 
 namespace PicFlyerApp {
 
@@ -81,25 +69,21 @@ namespace PicFlyerApp {
     static const int GUI_MAX_Y_PIC = 1200;
     static const int GUI_MIN_Z_PIC = 800;
     static const int GUI_MAX_Z_PIC = 1600;
-    // static const double KINECT_ROT_ANG = 3.14159265/8;
 
     enum envState_t {   ENV_STATE_INDEX,
                         ENV_STATE_ARRAY,
                         ENV_STATE_MATRIX,
                         ENV_STATE_IMAGE,
-                        // ENV_STATE_WAITING_LEAVE,
                         ENV_STATE_WAITING,
                         ENV_STATE_WAITING_SELECTED,
                         ENV_STATE_WAITING_BACK,
                         ENV_STATE_TURN,
                         ENV_STATE_SELECT,
                         ENV_STATE_BACK,
-                        // ENV_STATE_LEAVE,
                         ENV_STATE_IMAGE_ZOOM,
                         ENV_STATE_WAITING_MATRIX,
                         ENV_STATE_WAITING_ARRAY,
                         ENV_STATE_IMAGE_PAN,
-                        //ENV_STATE_PAGE_COLLECTION,
                         ENV_STATE_PAGE_TURNER};
 
     enum previousState_t {  INDEX_SELECTION,
@@ -133,8 +117,6 @@ namespace PicFlyerApp {
         PicFlyer(QString app_name, ros::NodeHandle nh, int event_deque_size);
         ~PicFlyer(){}
         
-        // Functions
-        // osg::Node* createRectangle(osg::BoundingBox& bb, int index);
         osgQt::GLWidget* addViewWidget( osg::Camera* camera, 
                                         osg::Node* scene );
         osg::Camera* createCamera( int x, int y, int w, int h,
@@ -146,14 +128,16 @@ namespace PicFlyerApp {
         void LoadTextures();
         void setTexture(QString ID, int texIndex);
         virtual void paintEvent( QPaintEvent* event ) { frame(); }
-        bool getPrimaryUser();
+
         osg::Vec3 mapWallPos(osg::Vec3 pt);
         void updateDockables();
         void updateCursors();
-        static void set_z_position(OSGObjectBase* p, int z);
-        void updateCursor(PlanarObject* cursor, vct3 kinect_hand_position, osg::Group* group);
+        
+	static void set_z_position(OSGObjectBase* p, int z);
+        
+	void updateCursor(PlanarObject* cursor, osg::Vec3d kinect_hand_position, osg::Group* group);
 
-        void setupSkeletons();
+        // void setupSkeletons();
         void readConfigFile();
 
         // Tooltips //
@@ -239,7 +223,7 @@ namespace PicFlyerApp {
         QList<PicFlyerApp::Model::Opening *>* dispOpenings;
 
 
-        vct2 mapEnvPos(vct3 in);
+        osg::Vec2d mapEnvPos(osg::Vec3d in);
 
 	int col_start;
 	int pages_start;
@@ -247,7 +231,7 @@ namespace PicFlyerApp {
     //Why is all of this public?
     public:
 
-        vct3 WKSP_OFFSET_PIC;
+        osg::Vec3d WKSP_OFFSET_PIC;
 
         // Icons //
         ObjectMap _actableIcons;
@@ -263,7 +247,7 @@ namespace PicFlyerApp {
         OSGObjectBase* _envWrapper;
         OSGObjectBase* _imageWrapper;
         OSGObjectBase* _indexWrapper;
-        OSGObjectBase* _skelWrapper;
+        //OSGObjectBase* _skelWrapper;
         OSGObjectBase* _hudWrapper;
         OSGObjectBase* _cursorWrapper;
         OSGObjectBase* _cameraAttachedObjects;
@@ -276,7 +260,7 @@ namespace PicFlyerApp {
         PlaneList _indexThumbs;
         
         // Skeletons //
-        SkeletonPtrList _skels;   
+        //SkeletonPtrList _skels;   
                                    
         // OPENGL and QT //
         osgQt::GLWidget* glWidget;
@@ -306,12 +290,8 @@ namespace PicFlyerApp {
         osg::ref_ptr<osgText::Text> pageInd;
 
         // Collections
-        //TODO: see notes on lines
         QStringList _collectionIDs; //Should probably be eliminated in a refactor
         QStringList _manuscriptIDs; //Should probably be eliminated in a refactor
-        // QMap<QString, PicFlyerApp::Model::PictureCollection *>* _unorderedCollections;
-        // QMap<QString, PicFlyerApp::Model::ManuscriptCollection *>* _manuscriptCollections;
-        // PicFlyerApp::Model::PictureCollectionFactory* arbFac;
 
         //Default images
         static osg::ref_ptr<osg::Image> defaultCoverImage;
@@ -328,17 +308,11 @@ namespace PicFlyerApp {
         PlanarObject* _pleaseWait;
         PlanarObject* _highlight;
         PlanarObject* _highlight_active;
-        // TexturedPlane* _largeImage;
-        // TexturedPlane* _pleaseWait;
-        // TexturedPlane* _highlight;
 
         // Opening
         QList<osg::ref_ptr< osg::TextureRectangle > > _opening;
-        // TextureList _opening;
         PlanarObject* _openingImage1;
         PlanarObject* _openingImage2;
-        // TexturedPlane* _openingImage1;
-        // TexturedPlane* _openingImage2;
 
         osg::Vec3 _imageLocation;
 
@@ -366,11 +340,6 @@ namespace PicFlyerApp {
         int dataTextureIndexStart;
         int dataTextureIndex;
 
-        int primaryUserID;
-        int firstUserID;
-        int secondUserID;
-        bool useKinect;
-
         bool userInRange;
         QString panning_hand;
 
@@ -379,21 +348,22 @@ namespace PicFlyerApp {
         static const double GUI_MAX_Y =  0.5;
         static const double GUI_MIN_Y = -0.5;
         
-        vct2 WKSP_OFF;
+        osg::Vec2d WKSP_OFF;
         envState_t _envState;
-        OSGObject* waitingObj;
-        int runtime;
         bool paused;
-        vct3 _torsoLast;
+        osg::Vec3d _torsoLast;
         osg::Vec3d _imageLast;
-        vct2 _handLast;
+        osg::Vec2d _handLast;
 
-        vct3 pr_saved;
-        vct3 pl_saved;
+        osg::Vec3d pr_saved;
+        osg::Vec3d pl_saved;
 
         bool _snap;
 
         std::vector<int> button_call;
+
+        bool resume();
+        bool pause();
 
     Q_SIGNALS:
         void showImgs(int node);
@@ -402,19 +372,13 @@ namespace PicFlyerApp {
 
     public Q_SLOTS:
         void config();
-        void pause();
         void unpause();
-        void resume();
         void suspend();
         void pullData(); 
-        void increment();
         void recieveDiscreteGesture(QMap<int,int> events){};
         void select();
         void back();
         void turn();
-        // void leave();        
-        // void setMatrixMode();
-        // void setArrayMode();
         
     protected:
         // Timers //
