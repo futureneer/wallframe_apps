@@ -1,0 +1,5 @@
+<launch>
+  <!-- <node pkg="wallframe_app_python_example" name="python_example_app" type="python_example_app.py"/> -->
+  <node pkg="wallframe_app_python_example" name="python_example_app_opengl" type="python_example_app_opengl.py"/>
+  <param name="/wallframe/apps/python_example/paths/assets" value="$(find wallframe_app_python_example)/assets"/>
+</launch>

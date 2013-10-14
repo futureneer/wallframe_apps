@@ -1,14 +1,14 @@
 #!/usr/bin/env python
-import roslib; roslib.load_manifest('modulair_app_python_example')
+import roslib; roslib.load_manifest('wallframe_app_python_example')
 import rospy, sys
-# Modulair Core Functionality
-import modulair_core
-from modulair_core import ModulairAppWidget
+# Wallframe Core Functionality
+import wallframe_core
+from wallframe_core import WallframeAppWidget
 # PySide Imports
 import PySide
 from PySide.QtGui import QApplication
 
-class PythonAppWidget(ModulairAppWidget):
+class PythonAppWidget(WallframeAppWidget):
   def __init__(self,name,app):
     super(PythonAppWidget,self).__init__(name,app)
     # Put stuff in here and make sure to make any widgets children of 'self'

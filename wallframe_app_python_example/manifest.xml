@@ -1,18 +1,18 @@
 <package>
-  <description brief="modulair_app_python_example">
+  <description brief="wallframe_app_python_example">
 
-     modulair_app_python_example
+     wallframe_app_python_example
 
   </description>
   <author>Kelleher Guerin</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
-  <url>http://ros.org/wiki/modulair_app_python_example</url>
+  <url>http://ros.org/wiki/wallframe_app_python_example</url>
   <depend package="rospy"/>
   <depend package="roscpp"/>
   <depend package="wallframe_core"/>
   <depend package="wallframe_msgs"/>
-  <depend package="modulair_osg_tools"/>
+  <depend package="wallframe_osg_tools"/>
 
 </package>
 

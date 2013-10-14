@@ -38,18 +38,18 @@
 #
 
 #!/usr/bin/env python
-import roslib; roslib.load_manifest('modulair_app_python_example')
+import roslib; roslib.load_manifest('wallframe_app_python_example')
 import rospy, sys
-# Modulair Core Functionality
-import modulair_core
-from modulair_core import ModulairAppWidget
+# Wallframe Core Functionality
+import wallframe_core
+from wallframe_core import WallframeAppWidget
 ### PySide Imports ###
 import PySide
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtOpenGL import QGLWidget
 from PySide.QtGui import QApplication
-from modulair_core import ModulairAppWidget
+from wallframe_core import WallframeAppWidget
 import math
 
 try:
@@ -62,7 +62,7 @@ except ImportError:
                           QtGui.QMessageBox.NoButton)
   sys.exit(1)
 
-class PythonAppWidget(ModulairAppWidget):
+class PythonAppWidget(WallframeAppWidget):
   signal_update_rotation = QtCore.Signal()
   def __init__(self,name,app):
     super(PythonAppWidget,self).__init__(name,app)
