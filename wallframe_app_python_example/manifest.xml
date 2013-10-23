@@ -1,13 +1,12 @@
 <package>
   <description brief="wallframe_app_python_example">
-
-     wallframe_app_python_example
-
+    A sample python example application for the Wallframe platform.
   </description>
   <author>Kelleher Guerin</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/wallframe_app_python_example</url>
+  
   <depend package="rospy"/>
   <depend package="roscpp"/>
   <depend package="wallframe_core"/>
